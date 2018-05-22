@@ -40,7 +40,7 @@ namespace LIS_Adapt.Controllers
         //atcelto pasutiju skaits
         //piesaistito klientu skaits
 
-                                    //k1 potencials klients        //k2 klients, ar vismaz 1 pasutiju                       //k3 patstavigais klients
+        //k1 potencials klients        //k2 klients, ar vismaz 1 pasutiju                       //k3 patstavigais klients
         //reklamas                  radas specialie piedavajumi     radas piedavajumi balstoties uz ieprieksejo pirkumu     neradas
         //pasutijumu noformesana    tiek veiktas visas parbaudes    parbaude vai izmantoto tos pasus datus                  parbaudes netiek veiktas
         //produktu apraksts         radas galvena specifikacija     radas galvena specifikacija                             radas pilna produktu specifikacija
@@ -48,14 +48,15 @@ namespace LIS_Adapt.Controllers
         public List<Lietotajs> apmacibasKopaInit()
         {
             var list = new List<Lietotajs>();
-            list.Add(new Lietotajs {
-                SeansuSkaits=2,
-                PavaditaisLaiksSistema=1,
-                PalidzibasApmeklesana=0,
-                VeiktiePasutijumi=0,
-                AtceltiePasutijumi=4,
-                PiesaistiKlienti=0,
-                Klase="K1"
+            list.Add(new Lietotajs
+            {
+                SeansuSkaits = 2,
+                PavaditaisLaiksSistema = 1,
+                PalidzibasApmeklesana = 0,
+                VeiktiePasutijumi = 0,
+                AtceltiePasutijumi = 4,
+                PiesaistiKlienti = 0,
+                Klase = "K1"
             });
             list.Add(new Lietotajs
             {
@@ -159,44 +160,62 @@ namespace LIS_Adapt.Controllers
             });
             list.Add(new Lietotajs
             {
-                SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 5,
+                SeansuSkaits = 2,
+                PavaditaisLaiksSistema = 4,
                 PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 0,
+                VeiktiePasutijumi = 2,
+                AtceltiePasutijumi = 1,
+                PiesaistiKlienti = 4,
+                Klase = "K3"
+            });
+            list.Add(new Lietotajs
+            {
+                SeansuSkaits = 8,
+                PavaditaisLaiksSistema = 6,
+                PalidzibasApmeklesana = 0,
+                VeiktiePasutijumi = 3,
+                AtceltiePasutijumi = 3,
                 PiesaistiKlienti = 1,
                 Klase = "K3"
             });
             list.Add(new Lietotajs
             {
                 SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 5,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
+                PavaditaisLaiksSistema = 9,
+                PalidzibasApmeklesana = 6,
+                VeiktiePasutijumi = 7,
                 AtceltiePasutijumi = 0,
                 PiesaistiKlienti = 1,
                 Klase = "K3"
             });
             list.Add(new Lietotajs
             {
-                SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 5,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
+                SeansuSkaits = 4,
+                PavaditaisLaiksSistema = 12,
+                PalidzibasApmeklesana = 1,
+                VeiktiePasutijumi = 3,
                 AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 1,
+                PiesaistiKlienti = 8,
                 Klase = "K3"
             });
-            list.Add(new Lietotajs
+            return list;
+        }
+        public List<Lietotajs> klasificejamaKopaInit()
+        {
+            var list = new List<Lietotajs>();
+            for (int i = 0; i < 15; i++)
             {
-                SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 5,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 1,
-                Klase = "K3"
-            });
+                Random r = new Random();
+                list.Add(new Lietotajs
+                {
+                    SeansuSkaits = r.Next(0, 10),
+                    PavaditaisLaiksSistema = r.Next(0, 10),
+                    PalidzibasApmeklesana = r.Next(0, 10),
+                    VeiktiePasutijumi = r.Next(0, 10),
+                    AtceltiePasutijumi = r.Next(0, 10),
+                    PiesaistiKlienti = r.Next(0, 10),
+                });
+            }
             return list;
         }
 
