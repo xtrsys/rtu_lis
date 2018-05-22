@@ -4,15 +4,25 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LIS_Adapt.Models;
+using LISAdapt.Models;
 
-namespace LIS_Adapt.Controllers
+namespace LISAdapt.Controllers
 {
     public class HomeController : Controller
     {
         public IActionResult Index()
+
         {
-            return View();
+            var randomList = KlasificejamaKopaInit();
+            var readyList = new List<Lietotajs>();
+            
+            foreach (var item in randomList)
+            {
+                KlasificetLietotaju(item);
+                readyList.Add(item);
+            }
+            var viewModel = new LietotajuSaraksts { Saraksts = readyList };
+            return View(readyList);
         }
 
         public IActionResult About()
@@ -45,167 +55,169 @@ namespace LIS_Adapt.Controllers
         //pasutijumu noformesana    tiek veiktas visas parbaudes    parbaude vai izmantoto tos pasus datus                  parbaudes netiek veiktas
         //produktu apraksts         radas galvena specifikacija     radas galvena specifikacija                             radas pilna produktu specifikacija
         //atlaides                  nav atlaide                     sakotneja atlaide                                       atlaide balstoties uz veiktiem pirkumiem un piesaisitiem klientiem
-        public List<Lietotajs> apmacibasKopaInit()
+        public List<Lietotajs> ApmacibasKopaInit()
         {
-            var list = new List<Lietotajs>();
-            list.Add(new Lietotajs
+            var list = new List<Lietotajs>
             {
-                SeansuSkaits = 2,
-                PavaditaisLaiksSistema = 1,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 0,
-                AtceltiePasutijumi = 4,
-                PiesaistiKlienti = 0,
-                Klase = "K1"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 3,
-                PavaditaisLaiksSistema = 3,
-                PalidzibasApmeklesana = 3,
-                VeiktiePasutijumi = 0,
-                AtceltiePasutijumi = 3,
-                PiesaistiKlienti = 0,
-                Klase = "K1"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 3,
-                PavaditaisLaiksSistema = 4,
-                PalidzibasApmeklesana = 9,
-                VeiktiePasutijumi = 0,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 0,
-                Klase = "K1"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 4,
-                PavaditaisLaiksSistema = 2,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 0,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 3,
-                Klase = "K1"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 3,
-                PavaditaisLaiksSistema = 2,
-                PalidzibasApmeklesana = 3,
-                VeiktiePasutijumi = 0,
-                AtceltiePasutijumi = 1,
-                PiesaistiKlienti = 0,
-                Klase = "K1"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 1,
-                PavaditaisLaiksSistema = 1,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 0,
-                Klase = "K2"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 3,
-                PavaditaisLaiksSistema = 1,
-                PalidzibasApmeklesana = 3,
-                VeiktiePasutijumi = 2,
-                AtceltiePasutijumi = 1,
-                PiesaistiKlienti = 0,
-                Klase = "K2"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 4,
-                PavaditaisLaiksSistema = 4,
-                PalidzibasApmeklesana = 6,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 3,
-                PiesaistiKlienti = 1,
-                Klase = "K2"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 5,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 1,
-                Klase = "K2"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 2,
-                PavaditaisLaiksSistema = 5,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 1,
-                Klase = "K2"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 5,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 1,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 1,
-                Klase = "K3"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 2,
-                PavaditaisLaiksSistema = 4,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 2,
-                AtceltiePasutijumi = 1,
-                PiesaistiKlienti = 4,
-                Klase = "K3"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 8,
-                PavaditaisLaiksSistema = 6,
-                PalidzibasApmeklesana = 0,
-                VeiktiePasutijumi = 3,
-                AtceltiePasutijumi = 3,
-                PiesaistiKlienti = 1,
-                Klase = "K3"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 5,
-                PavaditaisLaiksSistema = 9,
-                PalidzibasApmeklesana = 6,
-                VeiktiePasutijumi = 7,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 1,
-                Klase = "K3"
-            });
-            list.Add(new Lietotajs
-            {
-                SeansuSkaits = 4,
-                PavaditaisLaiksSistema = 12,
-                PalidzibasApmeklesana = 1,
-                VeiktiePasutijumi = 3,
-                AtceltiePasutijumi = 0,
-                PiesaistiKlienti = 8,
-                Klase = "K3"
-            });
+                new Lietotajs
+                {
+                    SeansuSkaits = 2,
+                    PavaditaisLaiksSistema = 1,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 0,
+                    AtceltiePasutijumi = 4,
+                    PiesaistiKlienti = 0,
+                    Klase = "K1"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 3,
+                    PavaditaisLaiksSistema = 3,
+                    PalidzibasApmeklesana = 3,
+                    VeiktiePasutijumi = 0,
+                    AtceltiePasutijumi = 3,
+                    PiesaistiKlienti = 0,
+                    Klase = "K1"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 3,
+                    PavaditaisLaiksSistema = 4,
+                    PalidzibasApmeklesana = 9,
+                    VeiktiePasutijumi = 0,
+                    AtceltiePasutijumi = 0,
+                    PiesaistiKlienti = 0,
+                    Klase = "K1"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 4,
+                    PavaditaisLaiksSistema = 2,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 0,
+                    AtceltiePasutijumi = 0,
+                    PiesaistiKlienti = 3,
+                    Klase = "K1"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 3,
+                    PavaditaisLaiksSistema = 2,
+                    PalidzibasApmeklesana = 3,
+                    VeiktiePasutijumi = 0,
+                    AtceltiePasutijumi = 1,
+                    PiesaistiKlienti = 0,
+                    Klase = "K1"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 1,
+                    PavaditaisLaiksSistema = 1,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 1,
+                    AtceltiePasutijumi = 0,
+                    PiesaistiKlienti = 0,
+                    Klase = "K2"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 3,
+                    PavaditaisLaiksSistema = 1,
+                    PalidzibasApmeklesana = 3,
+                    VeiktiePasutijumi = 2,
+                    AtceltiePasutijumi = 1,
+                    PiesaistiKlienti = 0,
+                    Klase = "K2"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 4,
+                    PavaditaisLaiksSistema = 4,
+                    PalidzibasApmeklesana = 6,
+                    VeiktiePasutijumi = 1,
+                    AtceltiePasutijumi = 3,
+                    PiesaistiKlienti = 1,
+                    Klase = "K2"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 5,
+                    PavaditaisLaiksSistema = 5,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 1,
+                    AtceltiePasutijumi = 0,
+                    PiesaistiKlienti = 1,
+                    Klase = "K2"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 2,
+                    PavaditaisLaiksSistema = 5,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 1,
+                    AtceltiePasutijumi = 0,
+                    PiesaistiKlienti = 1,
+                    Klase = "K2"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 5,
+                    PavaditaisLaiksSistema = 5,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 1,
+                    AtceltiePasutijumi = 0,
+                    PiesaistiKlienti = 1,
+                    Klase = "K3"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 2,
+                    PavaditaisLaiksSistema = 4,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 2,
+                    AtceltiePasutijumi = 1,
+                    PiesaistiKlienti = 4,
+                    Klase = "K3"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 8,
+                    PavaditaisLaiksSistema = 6,
+                    PalidzibasApmeklesana = 0,
+                    VeiktiePasutijumi = 3,
+                    AtceltiePasutijumi = 3,
+                    PiesaistiKlienti = 1,
+                    Klase = "K3"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 5,
+                    PavaditaisLaiksSistema = 9,
+                    PalidzibasApmeklesana = 6,
+                    VeiktiePasutijumi = 7,
+                    AtceltiePasutijumi = 4,
+                    PiesaistiKlienti = 1,
+                    Klase = "K3"
+                },
+                new Lietotajs
+                {
+                    SeansuSkaits = 4,
+                    PavaditaisLaiksSistema = 10,
+                    PalidzibasApmeklesana = 1,
+                    VeiktiePasutijumi = 3,
+                    AtceltiePasutijumi = 2,
+                    PiesaistiKlienti = 8,
+                    Klase = "K3"
+                }
+            };
             return list;
         }
-        public List<Lietotajs> klasificejamaKopaInit()
+        public List<Lietotajs> KlasificejamaKopaInit()
         {
             var list = new List<Lietotajs>();
-            for (int i = 0; i < 15; i++)
+            for (var i = 0; i < 15; i++)
             {
-                Random r = new Random();
+                var r = new Random();
                 list.Add(new Lietotajs
                 {
                     SeansuSkaits = r.Next(0, 10),
@@ -219,15 +231,75 @@ namespace LIS_Adapt.Controllers
             return list;
         }
 
+        public Lietotajs KlasificetLietotaju(Lietotajs lietotajs)
+        {
+
+            var K1Balsts = 0;
+            var K2Balsts = 0;
+            var K3Balsts = 0;
+            var apmacibasKopa = ApmacibasKopaInit();
+            foreach (var item in apmacibasKopa)
+            {
+                if (item.SeansuSkaits - lietotajs.SeansuSkaits <= 2 && item.PalidzibasApmeklesana - lietotajs.PalidzibasApmeklesana <= 3)
+                {
+                    switch (item.Klase)
+                    {
+                        case "K1":
+                            K1Balsts++;
+                            break;
+                        case "K2":
+                            K2Balsts++;
+                            break;
+                        case "K3":
+                            K3Balsts++;
+                            break;
+                    }
+                }
+                if (item.PavaditaisLaiksSistema - lietotajs.PavaditaisLaiksSistema <= 3 && item.AtceltiePasutijumi - lietotajs.AtceltiePasutijumi <= 1)
+                {
+                    switch (item.Klase)
+                    {
+                        case "K1":
+                            K1Balsts++;
+                            break;
+                        case "K2":
+                            K2Balsts++;
+                            break;
+                        case "K3":
+                            K3Balsts++;
+                            break;
+                    }
+                }
+                if (item.VeiktiePasutijumi - lietotajs.VeiktiePasutijumi <= 1 && item.PiesaistiKlienti - lietotajs.PiesaistiKlienti <= 1)
+                {
+                    switch (item.Klase)
+                    {
+                        case "K1":
+                            K1Balsts++;
+                            break;
+                        case "K2":
+                            K2Balsts++;
+                            break;
+                        case "K3":
+                            K3Balsts++;
+                            break;
+                    }
+                }
+            }
+            if (K1Balsts > K2Balsts && K1Balsts > K3Balsts)
+            {
+                lietotajs.Klase = "K1";
+            }
+            else if (K2Balsts > K1Balsts && K2Balsts > K3Balsts)
+            {
+                lietotajs.Klase = "K2";
+            }
+            else
+            {
+                lietotajs.Klase = "K3";
+            }
+            return lietotajs;
+        }
     }
-    public class Lietotajs
-    {
-        public int SeansuSkaits { get; set; }
-        public int PavaditaisLaiksSistema { get; set; }
-        public int PalidzibasApmeklesana { get; set; }
-        public int VeiktiePasutijumi { get; set; }
-        public int AtceltiePasutijumi { get; set; }
-        public int PiesaistiKlienti { get; set; }
-        public string Klase { get; set; }
-    }
+    
 }

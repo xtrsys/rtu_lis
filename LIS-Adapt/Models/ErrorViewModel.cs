@@ -1,6 +1,6 @@
 using System;
 
-namespace LIS_Adapt.Models
+namespace LISAdapt.Models
 {
     public class ErrorViewModel
     {
