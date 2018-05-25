@@ -378,9 +378,13 @@ namespace LISAdapt.Controllers
         }
         public BinarLietotajs KlasificetBinarLietotaju(BinarLietotajs lietotajs, List<BinarLietotajs> apmacibasKopa)
         {
-            var K1Balsts = 0;
-            var K2Balsts = 0;
-            var K3Balsts = 0;
+
+            var dict = new Dictionary<string, int>
+            {
+                {"K1",0 },
+                {"K2",0 },
+                {"K3",0 },
+            };
             var kopa1 = lietotajs.a1 + lietotajs.a2 + lietotajs.a3;
             var kopa2 = lietotajs.b1 + lietotajs.b2 + lietotajs.b3;
             var kopa3 = lietotajs.c1 + lietotajs.c2 + lietotajs.c3;
@@ -389,102 +393,16 @@ namespace LISAdapt.Controllers
             var kopa6 = lietotajs.c4 + lietotajs.c5 + lietotajs.c6;
             foreach (var item in apmacibasKopa)
             {
-                switch (item.Klase)
-                {
-                    case "K1":
-                        if (kopa1 == item.a1 + item.a2 + item.a3)
-                        {
-                            K1Balsts++;
-                        }
-                        if (kopa2 == item.b1 + item.b2 + item.b3)
-                        {
-                            K1Balsts++;
-                        }
-                        if (kopa3 == item.c1 + item.c2 + item.c3)
-                        {
-                            K1Balsts++;
-                        }
-                        if (kopa4 == item.a4 + item.a5 + item.a6)
-                        {
-                            K1Balsts++;
-                        }
-                        if (kopa5 == item.b4 + item.b5 + item.b6)
-                        {
-                            K1Balsts++;
-                        }
-                        if (kopa6 == item.c4 + item.c5 + item.c6)
-                        {
-                            K1Balsts++;
-                        }
-                        break;
-                    case "K2":
-                        if (kopa1 == item.a1 + item.a2 + item.a3)
-                        {
-                            K2Balsts++;
-                        }
-                        if (kopa2 == item.b1 + item.b2 + item.b3)
-                        {
-                            K2Balsts++;
-                        }
-                        if (kopa3 == item.c1 + item.c2 + item.c3)
-                        {
-                            K2Balsts++;
-                        }
-                        if (kopa4 == item.a4 + item.a5 + item.a6)
-                        {
-                            K2Balsts++;
-                        }
-                        if (kopa5 == item.b4 + item.b5 + item.b6)
-                        {
-                            K2Balsts++;
-                        }
-                        if (kopa6 == item.c4 + item.c5 + item.c6)
-                        {
-                            K2Balsts++;
-                        }
-                        break;
-                    case "K3":
-                        if (kopa1 == item.a1 + item.a2 + item.a3)
-                        {
-                            K3Balsts++;
-                        }
-                        if (kopa2 == item.b1 + item.b2 + item.b3)
-                        {
-                            K3Balsts++;
-                        }
-                        if (kopa3 == item.c1 + item.c2 + item.c3)
-                        {
-                            K3Balsts++;
-                        }
-                        if (kopa4 == item.a4 + item.a5 + item.a6)
-                        {
-                            K3Balsts++;
-                        }
-                        if (kopa5 == item.b4 + item.b5 + item.b6)
-                        {
-                            K3Balsts++;
-                        }
-                        if (kopa6 == item.c4 + item.c5 + item.c6)
-                        {
-                            K3Balsts++;
-                        }
-                        break;
-                }
-
-
+                var o1 = kopa1 == item.a1 + item.a2 + item.a3;
+                var o2 = kopa2 == item.b1 + item.b2 + item.b3;
+                var o3 = kopa3 == item.c1 + item.c2 + item.c3;
+                var o4 = kopa4 == item.a4 + item.a5 + item.a6;
+                var o5 = kopa5 == item.b4 + item.b5 + item.b6;
+                var o6 = kopa6 == item.c4 + item.c5 + item.c6;
+                if (o1 || o2 || o3 || o4 || o5 || o6) dict[item.Klase] += 1;
+               
             }
-            if (K1Balsts > K2Balsts && K1Balsts > K3Balsts)
-            {
-                lietotajs.Klase = "K1";
-            }
-            else if (K2Balsts > K1Balsts && K2Balsts > K3Balsts)
-            {
-                lietotajs.Klase = "K2";
-            }
-            else
-            {
-                lietotajs.Klase = "K3";
-            }
+            lietotajs.Klase = dict.OrderByDescending(k => k.Value).FirstOrDefault().Key;
             return lietotajs;
         }
         public List<BinarLietotajs> BinarKopaInit(List<Lietotajs> lietotajuSaraksts)
