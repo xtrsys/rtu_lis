@@ -13,17 +13,30 @@ namespace LISAdapt.Controllers
         public IActionResult Index()
 
         {
+            var prezicitate = new SalidzinasasPrecizitate
+            {
+                p1 = 2,
+                p2 = 3,
+                p3 = 3,
+                p4 = 1,
+                p5 = 1,
+                p6 = 1
+            };
             var randomList = KlasificejamaKopaInit();
             var randomBinarList = BinarKopaInit(randomList);
             var readyList = new List<Lietotajs>();
 
             foreach (var item in randomList)
             {
-                KlasificetLietotaju(item);
+                KlasificetLietotaju(item, prezicitate);
                 readyList.Add(item);
             }
-            var viewModel = new LietotajuSaraksts { Saraksts = readyList };
-            return View(readyList);
+            return View(randomList);
+        }
+        public IActionResult IndexManual(SalidzinasasPrecizitate precizitate)
+        {
+            return View();
+
         }
 
         public IActionResult About()
@@ -36,7 +49,7 @@ namespace LISAdapt.Controllers
 
             foreach (var item in randomBinarList)
             {
-                KlasificetBinarLietotaju(item,apmacibasKopaBinar);
+                KlasificetBinarLietotaju(item, apmacibasKopaBinar);
                 readyList.Add(item);
             }
             return View(readyList);
@@ -343,73 +356,24 @@ namespace LISAdapt.Controllers
             return list;
         }
 
-        public Lietotajs KlasificetLietotaju(Lietotajs lietotajs)
+        public Lietotajs KlasificetLietotaju(Lietotajs lietotajs, SalidzinasasPrecizitate precizitate)
         {
-
-            var K1Balsts = 0;
-            var K2Balsts = 0;
-            var K3Balsts = 0;
+            var dict = new Dictionary<string, int>
+            {
+                {"K1",0 },
+                {"K2",0 },
+                {"K3",0 },
+            };
             var apmacibasKopa = ApmacibasKopaInit();
             foreach (var item in apmacibasKopa)
             {
-                if (item.SeansuSkaits - lietotajs.SeansuSkaits <= 2 && item.PalidzibasApmeklesana - lietotajs.PalidzibasApmeklesana <= 3)
-                {
-                    switch (item.Klase)
-                    {
-                        case "K1":
-                            K1Balsts++;
-                            break;
-                        case "K2":
-                            K2Balsts++;
-                            break;
-                        case "K3":
-                            K3Balsts++;
-                            break;
-                    }
-                }
-                if (item.PavaditaisLaiksSistema - lietotajs.PavaditaisLaiksSistema <= 3 && item.AtceltiePasutijumi - lietotajs.AtceltiePasutijumi <= 1)
-                {
-                    switch (item.Klase)
-                    {
-                        case "K1":
-                            K1Balsts++;
-                            break;
-                        case "K2":
-                            K2Balsts++;
-                            break;
-                        case "K3":
-                            K3Balsts++;
-                            break;
-                    }
-                }
-                if (item.VeiktiePasutijumi - lietotajs.VeiktiePasutijumi <= 1 && item.PiesaistiKlienti - lietotajs.PiesaistiKlienti <= 1)
-                {
-                    switch (item.Klase)
-                    {
-                        case "K1":
-                            K1Balsts++;
-                            break;
-                        case "K2":
-                            K2Balsts++;
-                            break;
-                        case "K3":
-                            K3Balsts++;
-                            break;
-                    }
-                }
+                var o1 = Math.Abs(item.SeansuSkaits - lietotajs.SeansuSkaits) <= precizitate.p1 && Math.Abs(item.PalidzibasApmeklesana - lietotajs.PalidzibasApmeklesana) <= precizitate.p3;
+                var o2 = Math.Abs(item.PavaditaisLaiksSistema - lietotajs.PavaditaisLaiksSistema) <= precizitate.p2 && Math.Abs(item.AtceltiePasutijumi - lietotajs.AtceltiePasutijumi) <= precizitate.p5;
+                var o3 = Math.Abs(item.VeiktiePasutijumi - lietotajs.VeiktiePasutijumi) <= precizitate.p4 && Math.Abs(item.PiesaistiKlienti - lietotajs.PiesaistiKlienti) <= precizitate.p6;
+                if (o1 || o2 || o3) dict[item.Klase] += 1;
             }
-            if (K1Balsts > K2Balsts && K1Balsts > K3Balsts)
-            {
-                lietotajs.Klase = "K1";
-            }
-            else if (K2Balsts > K1Balsts && K2Balsts > K3Balsts)
-            {
-                lietotajs.Klase = "K2";
-            }
-            else
-            {
-                lietotajs.Klase = "K3";
-            }
+            lietotajs.Klase = dict.OrderByDescending(k => k.Value).FirstOrDefault().Key;
+
             return lietotajs;
         }
         public BinarLietotajs KlasificetBinarLietotaju(BinarLietotajs lietotajs, List<BinarLietotajs> apmacibasKopa)
@@ -423,13 +387,12 @@ namespace LISAdapt.Controllers
             var kopa4 = lietotajs.a4 + lietotajs.a5 + lietotajs.a6;
             var kopa5 = lietotajs.b4 + lietotajs.b5 + lietotajs.b6;
             var kopa6 = lietotajs.c4 + lietotajs.c5 + lietotajs.c6;
-            var kopuSumma = kopa1 + kopa2 + kopa3 + kopa4 + kopa5 + kopa6;
             foreach (var item in apmacibasKopa)
             {
                 switch (item.Klase)
                 {
                     case "K1":
-                        if(kopa1==item.a1+item.a2+item.a3)
+                        if (kopa1 == item.a1 + item.a2 + item.a3)
                         {
                             K1Balsts++;
                         }
@@ -507,7 +470,7 @@ namespace LISAdapt.Controllers
                         }
                         break;
                 }
-                    
+
 
             }
             if (K1Balsts > K2Balsts && K1Balsts > K3Balsts)

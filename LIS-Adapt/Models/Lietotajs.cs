@@ -15,9 +15,4 @@ namespace LISAdapt.Models
         public int PiesaistiKlienti { get; set; }
         public string Klase { get; set; }
     }
-
-    public class LietotajuSaraksts
-    {
-        public List<Lietotajs> Saraksts { get; set; }
-    }
 }
